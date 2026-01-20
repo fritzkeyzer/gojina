@@ -37,9 +37,7 @@ func main() {
 
 	fmt.Println("Streaming response...")
 	err := client.VLMStream(context.Background(), req, func(resp *jina.VLMResponse) error {
-		for _, choice := range resp.Choices {
-			fmt.Print(choice.Message.Content.Text)
-		}
+		fmt.Print(resp.Choices[0].Delta.Content)
 		return nil
 	})
 

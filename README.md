@@ -26,7 +26,3 @@ For comprehensive examples of how to use each API, please refer to the [examples
 Eg: [search](./examples/search/main.go) or [reader](./examples/reader/main.go)
 
 Each API has its own example showing how to construct requests and handle responses.
-
-## License
-
-MIT

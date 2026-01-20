@@ -98,9 +98,13 @@ type VLMResponse struct {
 }
 
 type VLMChoice struct {
-	Index        int        `json:"index"`
-	Message      VLMMessage `json:"message"`
-	FinishReason string     `json:"finish_reason"`
+	Index   int        `json:"index"`
+	Message VLMMessage `json:"message"`
+	Delta   struct {
+		Role    interface{} `json:"role"`
+		Content string      `json:"content"`
+	} `json:"delta"`
+	FinishReason string `json:"finish_reason"`
 }
 
 // VLM calls the Jina VLM API for image understanding and multimodal chat.
