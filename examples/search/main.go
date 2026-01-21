@@ -20,8 +20,10 @@ func main() {
 
 	req := jina.SearchRequest{
 		Query:        "Jina AI",
-		JSONResponse: true,
-		MaxResults:   3,
+		JSONResponse: false,
+		MaxResults:   10,
+		CountryCode:  "DE",
+		LanguageCode: "de",
 	}
 
 	resp, err := client.Search(context.Background(), req)
@@ -34,6 +36,6 @@ func main() {
 			fmt.Printf("Result %d: %s (%s)\n", i+1, item.Title, item.URL)
 		}
 	} else {
-		fmt.Println("No structured data returned")
+		fmt.Println(resp.Text)
 	}
 }

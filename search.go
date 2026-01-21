@@ -32,6 +32,9 @@ type SearchRequest struct {
 
 	// Header Options
 
+	// ReadFullContent will enable visiting every URL in the search result and returning the full content using Reader
+	ReadFullContent bool `json:"-"`
+
 	// JSONResponse controls whether to request application/json response.
 	JSONResponse bool `json:"-"`
 
@@ -52,9 +55,6 @@ type SearchRequest struct {
 
 	// WithGeneratedAlt, if true, generates captions for images without alt tags.
 	WithGeneratedAlt bool `json:"-"`
-
-	// RespondWith can be "no-content" to exclude page content from the response.
-	RespondWith string `json:"-"`
 
 	// WithFavicon, if true, includes favicon of the website in the response.
 	WithFavicon bool `json:"-"`
@@ -169,6 +169,9 @@ func (cl *Client) setSearchHeaders(req *http.Request, args SearchRequest) {
 		req.Header.Add("Accept", "application/json")
 	}
 
+	if !args.ReadFullContent {
+		req.Header.Add("X-Respond-With", "no-content")
+	}
 	if args.Site != "" {
 		req.Header.Add("X-Site", args.Site)
 	}
@@ -187,16 +190,13 @@ func (cl *Client) setSearchHeaders(req *http.Request, args SearchRequest) {
 	if args.WithGeneratedAlt {
 		req.Header.Add("X-With-Generated-Alt", "true")
 	}
-	if args.RespondWith != "" {
-		req.Header.Add("X-Respond-With", args.RespondWith)
-	}
 	if args.WithFavicon {
 		req.Header.Add("X-With-Favicon", "true")
 	}
 	if args.ReturnFormat != "" {
 		req.Header.Add("X-Return-Format", args.ReturnFormat)
 	}
-	if args.Engine != "" {
+	if args.ReadFullContent && args.Engine != "" {
 		req.Header.Add("X-Engine", args.Engine)
 	}
 	if args.WithFavicons {
