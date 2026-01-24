@@ -20,7 +20,7 @@ func main() {
 
 	req := jina.ReaderRequest{
 		URL:          "https://jina.ai",
-		JSONResponse: true,
+		JSONResponse: false,
 	}
 
 	resp, err := client.Reader(context.Background(), req)
@@ -30,8 +30,9 @@ func main() {
 
 	if resp.Structured != nil {
 		fmt.Printf("Title: %s\n", resp.Structured.Data.Title)
-		fmt.Printf("Content Preview: %s...\n", resp.Structured.Data.Content[:300])
+		fmt.Printf("Content Preview: %s...\n\n", resp.Structured.Data.Content[:300])
+		fmt.Printf("Usage: %d tokens\n", resp.Structured.Data.Usage.Tokens)
 	} else {
-		fmt.Println("No structured data returned")
+		fmt.Println(resp.Text)
 	}
 }

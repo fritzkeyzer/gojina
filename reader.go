@@ -122,7 +122,7 @@ type ReaderRequest struct {
 	WithShadowDom bool `json:"-"`
 
 	// Base use final to follow the full redirect chain.
-	Base string `json:"-"`
+	Base bool `json:"-"`
 
 	// MdHeadingStyle when to use '#' or '===' to create Markdown headings. Set atx to use any number of \"==\" or \"--\" characters on the line below the text to create headings.
 	MdHeadingStyle string `json:"-"`
@@ -163,16 +163,24 @@ type StructuredReaderResponse struct {
 	Code   int `json:"code"`
 	Status int `json:"status"`
 	Data   struct {
+		Warning     string            `json:"warning"`
 		Title       string            `json:"title"`
 		Description string            `json:"description"`
 		URL         string            `json:"url"`
 		Content     string            `json:"content"`
+		Metadata    map[string]any    `json:"metadata,omitempty"`
+		External    map[string]any    `json:"external,omitempty"`
 		Links       map[string]string `json:"links,omitempty"`
 		Images      map[string]string `json:"images,omitempty"`
 		Usage       struct {
 			Tokens int `json:"tokens"`
 		} `json:"usage"`
 	} `json:"data"`
+	Meta struct {
+		Usage struct {
+			Tokens int `json:"tokens"`
+		} `json:"usage"`
+	} `json:"meta"`
 }
 
 // Reader calls the Jina Reader API to retrieve and parse content from a URL.
@@ -321,8 +329,8 @@ func (cl *Client) setReaderHeaders(httpReq *http.Request, req ReaderRequest) {
 		httpReq.Header.Add("X-Robots-Txt", req.RobotsTxt)
 	}
 
-	if req.Base != "" {
-		httpReq.Header.Add("X-Base", req.Base)
+	if req.Base {
+		httpReq.Header.Add("X-Base", "final")
 	}
 
 	if req.MdHeadingStyle != "" {
