@@ -233,7 +233,7 @@ func (cl *Client) Reader(ctx context.Context, req ReaderRequest) (*ReaderRespons
 func (cl *Client) buildReaderURL(args ReaderRequest) string {
 	baseURL := "https://r.jina.ai/"
 	if args.EUCompliance {
-		baseURL = "https://eu.r.jina.ai/"
+		baseURL = "https://eu-r-beta.r.jina.ai/"
 	}
 
 	return baseURL

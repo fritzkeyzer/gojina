@@ -157,7 +157,7 @@ func (cl *Client) Search(ctx context.Context, req SearchRequest) (*SearchRespons
 func (cl *Client) buildSearchURL(args SearchRequest) string {
 	baseURL := "https://s.jina.ai/"
 	if args.EUCompliance {
-		baseURL = "https://eu.s.jina.ai/"
+		baseURL = "https://eu-s-beta.s.jina.ai/"
 	}
 	return baseURL
 }
